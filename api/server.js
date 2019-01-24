@@ -4,6 +4,9 @@ const knex = require("knex");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const cors = require('cors')
+const logger = require('morgan')
+
 
 const knexConfig = require("../knexfile");
 
@@ -13,6 +16,8 @@ const db = knex(knexConfig.development);
 
 server.use(helmet());
 server.use(express.json());
+server.use(cors());
+server.use(logger('combined'))
 
 //middleware
 
