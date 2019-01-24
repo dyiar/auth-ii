@@ -4,9 +4,8 @@ const knex = require("knex");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const cors = require('cors')
-const logger = require('morgan')
-
+const cors = require("cors");
+const logger = require("morgan");
 
 const knexConfig = require("../knexfile");
 
@@ -17,12 +16,12 @@ const db = knex(knexConfig.development);
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
-server.use(logger('combined'))
+server.use(logger("combined"));
 
 //middleware
 
 function generateToken(user) {
-  const payload = { username: user.username };
+  const payload = { username: user.username, department: user.department };
   const secret = process.env.JWT_SECRET;
   const options = {
     expiresIn: "10m"
@@ -34,10 +33,11 @@ function protected(req, res, next) {
   const token = req.headers.authorization;
 
   if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, err => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
       if (err) {
         res.status(401).send("invalid token");
       } else {
+        req.decodedToken = decodedToken;
         next();
       }
     });
@@ -78,8 +78,10 @@ server.post("/api/login", (req, res) => {
 });
 
 server.get("/api/users", protected, (req, res) => {
+  const decodedToken = req.decodedToken;
   db("users")
-    .select("username", "department", 'password')
+    .where({ department: decodedToken.department })
+    .select("username", "department", "password")
     .then(users => {
       res.json(users);
     })
