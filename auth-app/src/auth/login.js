@@ -31,24 +31,21 @@ class Login extends Component {
   };
 
   render() {
+    const makeInput = (name, type, placeholder) => (
+        <input
+        name={name}
+        value={this.state[name]}
+        type={type}
+        placeholder={placeholder}
+        onChange={this.handleChange}
+        />
+    )
     return (
       <>
         <h2>Login</h2>
         <form onSubmit={this.handleSubmit}>
-          <input
-            name="username"
-            value={this.state.username}
-            type="text"
-            placeholder="username"
-            onChange={this.handleChange}
-          />
-          <input
-            name="password"
-            value={this.state.password}
-            type="password"
-            placeholder="password"
-            onChange={this.handleChange}
-          />
+          {makeInput('username', 'text', 'username')}
+          {makeInput('password', 'password', 'password')}
           <button onSubmit={this.handleSubmit}>Submit</button>
         </form>
       </>

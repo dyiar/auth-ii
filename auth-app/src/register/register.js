@@ -43,7 +43,7 @@ class Register extends Component {
       )
     return (
       <>
-      <h2>Login</h2>
+      <h2>Register</h2>
         <form onSubmit={this.handleSubmit}>
           {makeInput('username', 'text', 'username')}
           {makeInput('password', 'password', 'password')}

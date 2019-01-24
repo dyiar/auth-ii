@@ -32,9 +32,9 @@ class Users extends Component {
         <h2>List of Users</h2>
         <ul>
           {this.state.users.map(user => (
-            <div key={user.username}>
-              {user.username}<br/>
-              {user.department}<br/><br/>
+            <div key={user.username} className="user-info">
+              Username: {user.username}<br/>
+              Department: {user.department}<br/><br/>
             </div>
           ))}
         </ul>
